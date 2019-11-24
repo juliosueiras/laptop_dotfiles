@@ -48,8 +48,19 @@ in {
     
   };
 
+  programs = {
+    vim.defaultEditor = true;
+  };
+
   home-manager.users.vagrant = {
     programs = {
+      bash = {
+        enable = true;
+        sessionVariables = {
+          EDITOR = "vim";
+        };
+      };
+
       git = {
       	enable = true;
 	userName = "Julio Tain Sueiras";
@@ -65,17 +76,56 @@ in {
       };
     };
 
-    home.file = {
-      ".inputrc".text = ''
-      set editing-mode vi
-      set keymap vi-command
-      '';
+    home = {
+      file = {
+        ".inputrc".text = ''
+        set editing-mode vi
+        set keymap vi-command
+        '';
+      };
     };
   };
 
-  environment.systemPackages = [
-    pkgs.vivaldi
-    pkgs.tilix
-    vimConfigured
-  ];
+  environment = {
+    variables = {
+      EDITOR = "vim";
+    };
+
+
+    etc = {
+      "containers/registries.conf".text = ''
+      [registries.search]
+      registries = ['docker.io', 'quay.io', "gcr.io", "eu.gcr.io"]
+      '';
+
+      "containers/policy.json".text     = builtins.toJSON {
+        default = [
+          {
+            type = "insecureAcceptAnything";
+          }
+        ];
+
+        transports = {
+          "docker-daemon" = {
+            "" = [
+              {
+                type = "insecureAcceptAnything";
+              }
+            ];
+          };
+        };
+      };
+    };
+
+    systemPackages = [
+      pkgs.vivaldi
+      pkgs.tilix
+      pkgs.podman
+      pkgs.conmon
+      pkgs.runc
+      pkgs.mongodb-tools
+      pkgs.zip
+      vimConfigured
+    ];
+  };
 }
