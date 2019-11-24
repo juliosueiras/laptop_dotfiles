@@ -12,7 +12,9 @@ Vagrant.configure("2") do |config|
   
     vb.memory = "13000"
 
-    vb.customize ["modifyvm", :id, "--accelerate3d", "on", "--accelerate2dvideo", "on"]
+    vb.cpus = 2
+
+    vb.customize ["modifyvm", :id, "--accelerate3d", "on", "--accelerate2dvideo", "on", "--graphicscontroller" ,"vmsvga"]
   end
 
   config.vm.provision :nixos,
