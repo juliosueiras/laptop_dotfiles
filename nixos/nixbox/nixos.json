@@ -1,0 +1,53 @@
+{
+  "builders": [
+    {
+      "boot_wait": "45s",
+      "boot_command": [
+        "echo http://{{ .HTTPIP }}:{{ .HTTPPort}} > .packer_http<enter>",
+        "mkdir -m 0700 .ssh<enter>",
+        "curl $(cat .packer_http)/install_rsa.pub > .ssh/authorized_keys<enter>",
+        "sudo systemctl start sshd<enter>"
+      ],
+      "http_directory": "scripts",
+      "iso_checksum_type": "sha256",
+      "shutdown_command": "sudo shutdown -h now",
+      "ssh_private_key_file": "./scripts/install_rsa",
+      "ssh_port": 22,
+      "ssh_username": "nixos",
+      "type": "virtualbox-iso",
+      "iso_url": "https://releases.nixos.org/nixos/19.09/nixos-19.09.741.dbad7c7d59f/nixos-minimal-19.09.741.dbad7c7d59f-x86_64-linux.iso",
+      "iso_checksum": "3379a53f998ca7bdc9b775a06d81275df7bd2c002e7d0fa0a3036cad9c3b7aca",
+      "guest_additions_mode": "disable",
+      "format": "ova",
+      "guest_os_type": "Linux_64",
+      "disk_size": 200000,
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "1024",
+          "--vram",
+          "128",
+          "--clipboard",
+          "bidirectional"
+        ]
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "execute_command": "sudo su -c '{{ .Vars }} {{.Path}}'",
+      "type": "shell",
+      "script": "./scripts/install.sh"
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "keep_input_artifact": false
+      }
+    ]
+  ]
+}
