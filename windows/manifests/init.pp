@@ -10,7 +10,7 @@ reboot {'dsc_reboot':
 }
 
 # Utilities
-package {["Virtualbox", "git", "Steam", "Discord"]:
+package {["Virtualbox", "git", "Steam", "Discord", "f.lux"]:
 }
 
 # HashiCorp's Tools

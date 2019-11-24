@@ -13,6 +13,16 @@ in {
   virtualisation.docker.enable = true;
   users.groups.docker.members = [ "vagrant" ];
 
+  # For Podman
+  users.users.vagrant.subUidRanges = [
+    { startUid = 1000000; count = 65536; }
+  ];
+
+  # For Podman
+  users.users.vagrant.subGidRanges = [
+    { startGid = 1000000; count = 65536; }
+  ];
+
   nixpkgs.config = {
     allowUnfree = true;
 
@@ -49,6 +59,8 @@ in {
   };
 
   programs = {
+    thefuck.enable = true;
+   
     vim.defaultEditor = true;
   };
 
@@ -124,7 +136,11 @@ in {
       pkgs.conmon
       pkgs.runc
       pkgs.mongodb-tools
+      pkgs.slirp4netns
       pkgs.zip
+      pkgs.ack
+      pkgs.ripgrep
+      pkgs.ranger
       vimConfigured
     ];
   };
