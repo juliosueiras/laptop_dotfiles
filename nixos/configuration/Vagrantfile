@@ -1,0 +1,23 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "nixos"
+
+  config.vm.hostname = "nixos"
+
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = true
+  
+    vb.memory = "13000"
+  end
+
+  config.vm.provision :nixos,
+    run: 'always',
+    path: "nixos/configuration.nix",
+    include: true,
+    verbose: true
+
+
+end
