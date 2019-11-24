@@ -13,7 +13,3 @@ done
 
 # Remove install ssh key
 rm -rf /root/.ssh /root/.packer_http
-
-# Zero out the disk (for better compression)
-dd if=/dev/zero of=/EMPTY bs=1M
-rm -rf /EMPTY
