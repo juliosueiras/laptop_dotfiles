@@ -1,6 +1,10 @@
 { config, pkgs, ... }:
 
-{
+let
+    vimConfigured = pkgs.vim_configurable.override {
+      python = pkgs.python3;
+    };
+in {
   imports = [
     ./configuration.nix
     "${builtins.fetchTarball https://github.com/rycee/home-manager/archive/master.tar.gz}/nixos"
@@ -11,6 +15,14 @@
 
   nixpkgs.config = {
     allowUnfree = true;
+
+    vim = {
+      perl = true;
+      multibyte = true;
+      nls = true;
+      tcl = true;
+      ftNix = true;
+    };
   };
 
 
@@ -47,6 +59,7 @@
       tmux = {
         enable = true;
 	keyMode = "vi";
+	customPaneNavigationAndResize = true;
 	
 	tmuxinator.enable = true;
       };
@@ -63,5 +76,6 @@
   environment.systemPackages = [
     pkgs.vivaldi
     pkgs.tilix
+    vimConfigured
   ];
 }
