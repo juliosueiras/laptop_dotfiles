@@ -36,4 +36,4 @@ dsc {'WSL':
     ensure => 'Enable',
     name => 'Microsoft-Windows-Subsystem-Linux',
   }
-}
+}->package {'wsl-alpine': }
