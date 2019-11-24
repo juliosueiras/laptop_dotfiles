@@ -15,7 +15,8 @@ package {["Virtualbox", "git", "Steam"]:
 
 # HashiCorp's Tools
 package {["terraform", "packer", "vagrant"]:
-}
+}->
+class { 'vagrant::plugins::nixos':}
 
 # Packages Graveyard
 package {["mongoclient", "mongodb.portable"]:
