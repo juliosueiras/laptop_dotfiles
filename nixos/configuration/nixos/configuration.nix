@@ -181,6 +181,7 @@ in {
       pkgs.google-cloud-sdk
       pkgs.vault
       pkgs.kubernetes-helm
+      pkgs.git-hub
       vimConfigured
     ];
   };
