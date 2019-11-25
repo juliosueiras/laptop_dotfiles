@@ -4,13 +4,26 @@ let
     vimConfigured = pkgs.vim_configurable.override {
       python = pkgs.python3;
     };
+
+    terraform = pkgs.terraform.overrideAttrs(oldAtts: {
+      name = "terraform-0.12.16";
+      version = "0.12.16";
+      src = pkgs.fetchFromGitHub {
+        owner = "hashicorp";
+        repo = "terraform";
+        rev = "v0.12.16";
+        sha256 = "10r9vra4d3lyms9cvl0g1ij6ldcfi3vjrqsmd52isrmlmjdzm8nk";
+        
+      };
+    });
+
 in {
   imports = [
     ./configuration.nix
     "${builtins.fetchTarball https://github.com/rycee/home-manager/archive/master.tar.gz}/nixos"
   ];
 
-  virtualisation.docker.enable = true;
+  #virtualisation.docker.enable = true;
   users.groups.docker.members = [ "vagrant" ];
 
   # For Podman
@@ -65,10 +78,20 @@ in {
 
   home-manager.users.vagrant = {
     programs = {
+
+      direnv.enable = true;
+
       bash = {
         enable = true;
+
+	shellAliases = {
+	  tf = "terraform";
+	  docker = "podman";
+	};
+
         sessionVariables = {
           EDITOR = "vim";
+          VAULT_ADDR = "https://vault.gatethree.io";
         };
       };
 
@@ -76,6 +99,10 @@ in {
       	enable = true;
 	userName = "Julio Tain Sueiras";
 	userEmail = "juliosueiras@gmail.com";
+
+        aliases = {
+          ignore = "\"!gi() { curl -sL https://www.gitignore.io/api/$@ ;}; gi\"";
+        };
       };
 
       tmux = {
@@ -145,10 +172,15 @@ in {
       pkgs.wget
       pkgs.binutils
       pkgs.file
+      pkgs.asciinema
+      terraform
       pkgs.ranger
       pkgs.kubectl
+      pkgs.go_1_12
       pkgs.dtrx
       pkgs.google-cloud-sdk
+      pkgs.vault
+      pkgs.kubernetes-helm
       vimConfigured
     ];
   };
