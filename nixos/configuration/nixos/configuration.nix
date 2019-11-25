@@ -35,16 +35,18 @@ in {
     };
   };
 
+  fonts.fonts = with pkgs; [
+    cantarell-fonts
+    dejavu_fonts
+    source-code-pro # Default monospace font in 3.32
+    source-sans-pro
+  ];
+
 
   services.fractalart.enable = true;
 
   services.xserver = {
     enable = true;
-
-    desktopManager = {
-      gnome3.enable = true;
-      plasma5.enable = true;
-    };
 
     videoDrivers = [ "intel" "virtualbox" "vesa" ];
     displayManager.gdm.enable = true;
@@ -53,7 +55,6 @@ in {
     windowManager = {
       awesome.enable = true;
     };
-    
   };
 
   programs = {
@@ -140,8 +141,14 @@ in {
       pkgs.zip
       pkgs.ack
       pkgs.ripgrep
+      pkgs.mdbook
+      pkgs.wget
+      pkgs.binutils
+      pkgs.file
       pkgs.ranger
       pkgs.kubectl
+      pkgs.dtrx
+      pkgs.google-cloud-sdk
       vimConfigured
     ];
   };

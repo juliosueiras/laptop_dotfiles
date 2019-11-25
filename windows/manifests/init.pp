@@ -13,6 +13,11 @@ reboot {'dsc_reboot':
 package {["Virtualbox", "git", "Steam", "Discord", "f.lux"]:
 }
 
+# Parsec(seperate to skip checksums)
+package {'parsec':
+  install_options => ["--ignore-checksums", "--pre"],
+}
+
 # HashiCorp's Tools
 package {["terraform", "packer", "vagrant"]:
 }->
