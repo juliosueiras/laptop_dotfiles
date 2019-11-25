@@ -49,3 +49,17 @@ dsc_xregistry {'remap caps lock to escape':
   dsc_hex => true,
   notify => Reboot['dsc_reboot'],
 }
+
+dsc_registry {'disable lock key':
+  dsc_ensure => 'Present',
+  dsc_key => 'HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System',
+  dsc_valuename => 'DisableLockWorkstation',
+  dsc_valuedata => '1',
+  dsc_valuetype => 'Dword',
+  #dsc_hex => true,
+  dsc_force => true,
+  dsc_psdscrunascredential => {
+    user => lookup('user'),
+    password => Sensitive(lookup('password')),
+  },
+}

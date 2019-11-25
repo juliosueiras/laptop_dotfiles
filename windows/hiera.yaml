@@ -1,0 +1,8 @@
+---
+version: 5
+hierarchy:
+  - name: Default              # A level of the hierarchy. They can be more using different data sources
+    path: default.yaml         # The path of the file, under the datadir, where data is stored
+defaults:
+  data_hash: yaml_data        # Use the YAML backend
+  datadir: data               # Yaml files are stored in the data dir of your Puppet environment

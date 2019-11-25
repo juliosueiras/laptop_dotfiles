@@ -41,20 +41,18 @@ in {
   services.xserver = {
     enable = true;
 
-    resolutions = [
-     {
-       x = 1920;
-       y = 1080;
-     }
-    ];
-
     desktopManager = {
       gnome3.enable = true;
+      plasma5.enable = true;
     };
 
+    videoDrivers = [ "intel" "virtualbox" "vesa" ];
     displayManager.gdm.enable = true;
+    displayManager.gdm.wayland = false;
 
-    windowManager.awesome.enable = true;
+    windowManager = {
+      awesome.enable = true;
+    };
     
   };
 
@@ -98,6 +96,7 @@ in {
     };
   };
 
+
   environment = {
     variables = {
       EDITOR = "vim";
@@ -129,6 +128,7 @@ in {
       };
     };
 
+
     systemPackages = [
       pkgs.vivaldi
       pkgs.tilix
@@ -141,6 +141,7 @@ in {
       pkgs.ack
       pkgs.ripgrep
       pkgs.ranger
+      pkgs.kubectl
       vimConfigured
     ];
   };
