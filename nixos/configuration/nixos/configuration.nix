@@ -5,6 +5,39 @@ let
       python = pkgs.python3;
     };
 
+     
+    terraform-lsp = with pkgs; buildGoModule rec {
+      pname = "terraform-lsp";
+      version = "0.0.9";
+
+      src = fetchFromGitHub {
+        owner = "juliosueiras";
+        repo = pname;
+        rev = "v${version}";
+        sha256 = "1m133fznf58fkjl5yx0gxa3cjfb0h8f9fv760c9h1d5cg279bghk";
+      };
+
+      modSha256 = "1mb3169vdlv4h10k15pg88s48s2b6y7v5frk9j9ahg52grygcqb2";
+
+      meta = with lib; {
+        description = "Language Server Protocol for Terraform";
+        homepage = "https://github.com/juliosueiras/terraform-lsp";
+        license = licenses.mit;
+        maintainers = [ maintainers.marsam ];
+      };
+    };
+
+    onedark = pkgs.vimUtils.buildVimPlugin {
+      name = "onedark";
+      src = pkgs.fetchgit {
+        url = "https://github.com/joshdick/onedark.vim.git";
+        rev = "7f36f83f13d3bdbd3dca4e3e8b2a10a5ecdca5e9";
+        sha256 = "0cnn3j3invasqh5sn20gf9lvcksqhracrbyr3pn3fs9shp7f1kxw";
+      };
+      dependencies = [];
+    };
+
+
     terraform = pkgs.terraform.overrideAttrs(oldAtts: {
       name = "terraform-0.12.16";
       version = "0.12.16";
@@ -105,6 +138,24 @@ in {
         };
       };
 
+
+      vim = {
+        enable = true;
+
+        plugins = with pkgs.vimPlugins;[
+          onedark
+	  vim-sensible
+	  vim-polyglot
+          coc-nvim
+          syntastic
+        ];
+
+	extraConfig = ''
+	packloadall
+	color onedark
+	'';
+      };
+
       tmux = {
         enable = true;
 	keyMode = "vi";
@@ -186,7 +237,9 @@ in {
       pkgs.gitAndTools.hub
       pkgs.pandoc
       pkgs.pandoc-imagine
+      pkgs.nodejs
       vimConfigured
+      terraform-lsp
     ];
   };
 }
