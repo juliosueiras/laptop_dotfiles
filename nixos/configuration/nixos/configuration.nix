@@ -99,6 +99,11 @@ in {
         };
       };
 
+      browserpass = {
+        enable = true;
+        browsers = ["vivaldi"];
+      };
+
       git = {
       	enable = true;
 	userName = "Julio Tain Sueiras";
@@ -113,9 +118,26 @@ in {
       vim = {
         enable = true;
 
+        settings = {
+          undodir = [
+            "~/.vimtmp"
+          ];
+
+          directory = [
+            "~/.vimtmp"
+          ];
+
+          backupdir = [
+            "~/.vimtmp"
+          ];
+
+          undofile = true;
+        };
+
         plugins = with pkgs.vimPlugins;[
           vim-terraform
           coc-nvim
+	  zeavim-vim
           customPackages.customVimPlugins.onedark
           customPackages.customVimPlugins.ctrlspace
           customPackages.customVimPlugins.helper
@@ -133,11 +155,18 @@ in {
 
 	extraConfig = ''
         set hidden
+	let mapleader=','
 	packloadall
 	color onedark
         set nu
 	set clipboard=unnamedplus
         autocmd filetype terraform inoremap <silent><expr> <C-X><C-O> coc#refresh()
+   	nmap <leader>z <Plug>Zeavim
+        vmap <leader>z <Plug>ZVVisSelection
+        nmap gz <Plug>ZVOperator
+        nmap <leader><leader>z <Plug>ZVKeyDocset
+
+	let g:syntastic_puppet_checkers = ['puppetlint']
 	'';
       };
 
@@ -240,9 +269,13 @@ in {
       pkgs.nodejs
       pkgs.packer
       pkgs.bundler
+      pkgs.puppet-lint
       customRuby
       pkgs.chefdk
       pkgs.autoconf
+      (pkgs.pass.withExtensions (ext: [ ext.pass-import ]))
+      pkgs.zeal
+      pkgs.gnupg22
       vimConfigured
       customPackages.terraform-lsp
       customPackages.pandoc-imagine
