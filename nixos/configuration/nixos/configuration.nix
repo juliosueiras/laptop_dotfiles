@@ -9,40 +9,8 @@ let
     };
 
      
-    terraform-lsp = with pkgs; buildGoModule rec {
-      pname = "terraform-lsp";
-      version = "0.0.9";
-
-      src = fetchFromGitHub {
-        owner = "juliosueiras";
-        repo = pname;
-        rev = "v${version}";
-        sha256 = "1m133fznf58fkjl5yx0gxa3cjfb0h8f9fv760c9h1d5cg279bghk";
-      };
-
-      modSha256 = "1mb3169vdlv4h10k15pg88s48s2b6y7v5frk9j9ahg52grygcqb2";
-
-      meta = with lib; {
-        description = "Language Server Protocol for Terraform";
-        homepage = "https://github.com/juliosueiras/terraform-lsp";
-        license = licenses.mit;
-        maintainers = [ maintainers.marsam ];
-      };
-    };
 
     customPackages = import "${base}/packages/all-packages.nix" { inherit pkgs; };
-
-    terraform = pkgs.terraform.overrideAttrs(oldAtts: {
-      name = "terraform-0.12.16";
-      version = "0.12.16";
-      src = pkgs.fetchFromGitHub {
-        owner = "hashicorp";
-        repo = "terraform";
-        rev = "v0.12.16";
-        sha256 = "10r9vra4d3lyms9cvl0g1ij6ldcfi3vjrqsmd52isrmlmjdzm8nk";
-        
-      };
-    });
 
 in {
   imports = [
@@ -184,7 +152,7 @@ in {
 
           languageserver = {
             terraform = {
-              command = "${terraform-lsp}/bin/terraform-lsp";
+              command = "${customPackages.terraform-lsp}/bin/terraform-lsp";
               args = [ "-enable-log-file" "-log-location" "/tmp/" ];
               filetypes = [ "terraform" ];
               rootPatterns = ["*.tf"];
@@ -245,7 +213,7 @@ in {
       pkgs.binutils
       pkgs.file
       pkgs.asciinema
-      terraform
+      customPackages.terraform
       pkgs.ranger
       pkgs.kubectl
       pkgs.go_1_12
@@ -260,7 +228,7 @@ in {
       pkgs.pandoc-imagine
       pkgs.nodejs
       vimConfigured
-      terraform-lsp
+      customPackages.terraform-lsp
     ];
   };
 }
