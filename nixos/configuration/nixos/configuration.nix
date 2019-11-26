@@ -13,6 +13,7 @@ let
     customRuby = pkgs.ruby.withPackages (p: with customPackages.rubyPackages; [
       pkgs.bundler
       puppet
+      bolt
       librarian-puppet
       inspec-bin
       chef
@@ -135,6 +136,7 @@ in {
 	packloadall
 	color onedark
         set nu
+	set clipboard=unnamedplus
         autocmd filetype terraform inoremap <silent><expr> <C-X><C-O> coc#refresh()
 	'';
       };
@@ -224,6 +226,8 @@ in {
       customPackages.terraform
       pkgs.ranger
       pkgs.kubectl
+      pkgs.ansible
+      pkgs.salt
       pkgs.go_1_12
       pkgs.dtrx
       pkgs.google-cloud-sdk
@@ -233,7 +237,6 @@ in {
       pkgs.plantuml
       pkgs.gitAndTools.hub
       pkgs.pandoc
-      pkgs.pandoc-imagine
       pkgs.nodejs
       pkgs.packer
       pkgs.bundler
@@ -242,6 +245,7 @@ in {
       pkgs.autoconf
       vimConfigured
       customPackages.terraform-lsp
+      customPackages.pandoc-imagine
     ];
   };
 }
