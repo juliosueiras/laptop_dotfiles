@@ -8,10 +8,18 @@ let
       python = pkgs.python3;
     };
 
-     
-
     customPackages = import "${base}/packages/all-packages.nix" { inherit pkgs; };
 
+    customRuby = pkgs.ruby.withPackages (p: with customPackages.rubyPackages; [
+      pkgs.bundler
+      puppet
+      librarian-puppet
+      inspec-bin
+      chef
+      test-kitchen
+      kitchen-google
+      kitchen-puppet
+    ]);
 in {
   imports = [
     ./configuration.nix
@@ -227,6 +235,11 @@ in {
       pkgs.pandoc
       pkgs.pandoc-imagine
       pkgs.nodejs
+      pkgs.packer
+      pkgs.bundler
+      customRuby
+      pkgs.chefdk
+      pkgs.autoconf
       vimConfigured
       customPackages.terraform-lsp
     ];
