@@ -182,6 +182,10 @@ in {
       pkgs.vault
       pkgs.kubernetes-helm
       pkgs.git-hub
+      pkgs.plantuml
+      pkgs.gitAndTools.hub
+      pkgs.pandoc
+      pkgs.pandoc-imagine
       vimConfigured
     ];
   };
