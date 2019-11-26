@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 
 let
+    base = "/vagrant/nixos";
+
+
     vimConfigured = pkgs.vim_configurable.override {
       python = pkgs.python3;
     };
@@ -27,16 +30,7 @@ let
       };
     };
 
-    onedark = pkgs.vimUtils.buildVimPlugin {
-      name = "onedark";
-      src = pkgs.fetchgit {
-        url = "https://github.com/joshdick/onedark.vim.git";
-        rev = "7f36f83f13d3bdbd3dca4e3e8b2a10a5ecdca5e9";
-        sha256 = "0cnn3j3invasqh5sn20gf9lvcksqhracrbyr3pn3fs9shp7f1kxw";
-      };
-      dependencies = [];
-    };
-
+    customPackages = import "${base}/packages/all-packages.nix" { inherit pkgs; };
 
     terraform = pkgs.terraform.overrideAttrs(oldAtts: {
       name = "terraform-0.12.16";
@@ -143,16 +137,29 @@ in {
         enable = true;
 
         plugins = with pkgs.vimPlugins;[
-          onedark
+          vim-terraform
+          coc-nvim
+          customPackages.customVimPlugins.onedark
+          customPackages.customVimPlugins.ctrlspace
+          customPackages.customVimPlugins.helper
+          customPackages.customVimPlugins.treemenu
+          customPackages.customVimPlugins.vikube
+          vim-multiple-cursors
 	  vim-sensible
 	  vim-polyglot
-          coc-nvim
+          coc-json
           syntastic
+          ultisnips
+          vim-snippets
+          lightline-vim
         ];
 
 	extraConfig = ''
+        set hidden
 	packloadall
 	color onedark
+        set nu
+        autocmd filetype terraform inoremap <silent><expr> <C-X><C-O> coc#refresh()
 	'';
       };
 
@@ -171,6 +178,20 @@ in {
         set editing-mode vi
         set keymap vi-command
         '';
+
+        ".vim/coc-settings.json".text = builtins.toJSON {
+          "coc.preferences.timeout" = 5000;
+
+          languageserver = {
+            terraform = {
+              command = "${terraform-lsp}/bin/terraform-lsp";
+              args = [ "-enable-log-file" "-log-location" "/tmp/" ];
+              filetypes = [ "terraform" ];
+              rootPatterns = ["*.tf"];
+              "trace.server" = "verbose";
+            };
+          };
+        };
       };
     };
   };
