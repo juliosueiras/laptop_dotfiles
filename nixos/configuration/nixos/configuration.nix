@@ -131,6 +131,10 @@ in {
           ];
 
           undofile = true;
+
+	  tabstop = 2;
+	  shiftwidth = 2;
+	  expandtab = true;
         };
 
         plugins = with pkgs.vimPlugins;[
@@ -276,6 +280,9 @@ in {
       (pkgs.pass.withExtensions (ext: [ ext.pass-import ]))
       pkgs.zeal
       pkgs.gnupg22
+      pkgs.httpie
+      pkgs.unzip
+      pkgs.dos2unix
       vimConfigured
       customPackages.terraform-lsp
       customPackages.pandoc-imagine
