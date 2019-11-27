@@ -32,16 +32,9 @@ package {["mongoclient", "mongodb.portable"]:
 package {'powershell':}->
 
 # Install WSL(Linux in Windows)
-dsc {'WSL':
-  resource_name => 'WindowsOptionalFeature',
-  module        => {
-    name    => 'PSDesiredStateConfiguration',
-    version => '1.1'
-  },
-  properties => {
-    ensure => 'Enable',
-    name => 'Microsoft-Windows-Subsystem-Linux',
-  }
+dsc_windowsoptionalfeature {'WSL':
+  dsc_ensure => 'Enable',
+  dsc_name => 'Microsoft-Windows-Subsystem-Linux',
 }->package {'wsl-alpine': }
 
 
