@@ -3,7 +3,6 @@
 let
     base = "/vagrant/nixos";
 
-
     vimConfigured = pkgs.vim_configurable.override {
       python = pkgs.python3;
     };
@@ -273,6 +272,7 @@ in {
       customRuby
       pkgs.chefdk
       pkgs.autoconf
+      pkgs.augeas
       (pkgs.pass.withExtensions (ext: [ ext.pass-import ]))
       pkgs.zeal
       pkgs.gnupg22
