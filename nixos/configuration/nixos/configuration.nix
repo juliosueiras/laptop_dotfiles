@@ -199,6 +199,8 @@ in {
           set keymap vi-command
         '';
 
+        ".vimtmp/.keep".text = "";
+
         ".vim/coc-settings.json".text = builtins.toJSON {
           "coc.preferences.timeout" = 5000;
 
