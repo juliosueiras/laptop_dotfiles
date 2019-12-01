@@ -1,25 +1,25 @@
 { config, pkgs, ... }:
 
 let
-    base = "/vagrant/nixos";
+  base = "/vagrant/nixos";
 
-    vimConfigured = pkgs.vim_configurable.override {
-      python = pkgs.python3;
-    };
+  vimConfigured = pkgs.vim_configurable.override {
+    python = pkgs.python3;
+  };
 
-    customPackages = import "${base}/packages/all-packages.nix" { inherit pkgs; };
+  customPackages = import "${base}/packages/all-packages.nix" { inherit pkgs; };
 
-    customRuby = pkgs.ruby.withPackages (p: with customPackages.rubyPackages; [
-      pkgs.bundler
-      puppet
-      bolt
-      librarian-puppet
-      inspec-bin
-      chef
-      test-kitchen
-      kitchen-google
-      kitchen-puppet
-    ]);
+  customRuby = pkgs.ruby.withPackages (p: with customPackages.rubyPackages; [
+    pkgs.bundler
+    puppet
+    bolt
+    librarian-puppet
+    inspec-bin
+    chef
+    test-kitchen
+    kitchen-google
+    kitchen-puppet
+  ]);
 in {
   imports = [
     ./configuration.nix
@@ -51,6 +51,8 @@ in {
     };
   };
 
+  time.timeZone = "America/Toronto";
+
   fonts.fonts = with pkgs; [
     cantarell-fonts
     dejavu_fonts
@@ -68,6 +70,11 @@ in {
     displayManager.gdm.enable = true;
     displayManager.gdm.wayland = false;
 
+    desktopManager = {
+      #Mostly for tellico
+      plasma5.enable = true;
+    };
+
     windowManager = {
       awesome.enable = true;
     };
@@ -75,7 +82,7 @@ in {
 
   programs = {
     thefuck.enable = true;
-   
+
     vim.defaultEditor = true;
   };
 
@@ -87,10 +94,10 @@ in {
       bash = {
         enable = true;
 
-	shellAliases = {
-	  tf = "terraform";
-	  docker = "podman";
-	};
+        shellAliases = {
+          tf = "terraform";
+          docker = "podman";
+        };
 
         sessionVariables = {
           EDITOR = "vim";
@@ -104,9 +111,9 @@ in {
       };
 
       git = {
-      	enable = true;
-	userName = "Julio Tain Sueiras";
-	userEmail = "juliosueiras@gmail.com";
+        enable = true;
+        userName = "Julio Tain Sueiras";
+        userEmail = "juliosueiras@gmail.com";
 
         aliases = {
           ignore = "\"!gi() { curl -sL https://www.gitignore.io/api/$@ ;}; gi\"";
@@ -132,61 +139,64 @@ in {
 
           undofile = true;
 
-	  tabstop = 2;
-	  shiftwidth = 2;
-	  expandtab = true;
+          tabstop = 2;
+          shiftwidth = 2;
+          expandtab = true;
         };
 
         plugins = with pkgs.vimPlugins;[
           vim-terraform
           coc-nvim
-	  zeavim-vim
+          zeavim-vim
           customPackages.customVimPlugins.onedark
           customPackages.customVimPlugins.ctrlspace
           customPackages.customVimPlugins.helper
           customPackages.customVimPlugins.treemenu
           customPackages.customVimPlugins.vikube
           vim-multiple-cursors
-	  vim-sensible
-	  vim-polyglot
-          coc-json
+          vim-sensible
+          vim-polyglot
           syntastic
           ultisnips
           vim-snippets
           lightline-vim
         ];
 
-	extraConfig = ''
-        set hidden
-	let mapleader=','
-	packloadall
-	color onedark
-        set nu
-	set clipboard=unnamedplus
-        autocmd filetype terraform inoremap <silent><expr> <C-X><C-O> coc#refresh()
-   	nmap <leader>z <Plug>Zeavim
-        vmap <leader>z <Plug>ZVVisSelection
-        nmap gz <Plug>ZVOperator
-        nmap <leader><leader>z <Plug>ZVKeyDocset
+        extraConfig = ''
+         set hidden
+         let mapleader=','
+         packloadall
+         color onedark
+         set nu
+         set clipboard=unnamedplus
 
-	let g:syntastic_puppet_checkers = ['puppetlint']
-	'';
+         autocmd filetype terraform,lua,sh,go,ruby inoremap <silent><expr> <C-X><C-O> coc#refresh()
+         autocmd filetype vim inoremap <C-X><C-O> <C-X><C-V>
+
+         nmap <leader>z <Plug>Zeavim
+         vmap <leader>z <Plug>ZVVisSelection
+         nmap gz <Plug>ZVOperator
+         nmap <leader><leader>z <Plug>ZVKeyDocset
+
+         let g:syntastic_puppet_checkers = ['puppetlint']
+
+        '';
       };
 
       tmux = {
         enable = true;
-	keyMode = "vi";
-	customPaneNavigationAndResize = true;
-	
-	tmuxinator.enable = true;
+        keyMode = "vi";
+        customPaneNavigationAndResize = true;
+
+        tmuxinator.enable = true;
       };
     };
 
     home = {
       file = {
         ".inputrc".text = ''
-        set editing-mode vi
-        set keymap vi-command
+          set editing-mode vi
+          set keymap vi-command
         '';
 
         ".vim/coc-settings.json".text = builtins.toJSON {
@@ -199,6 +209,25 @@ in {
               filetypes = [ "terraform" ];
               rootPatterns = ["*.tf"];
               "trace.server" = "verbose";
+            };
+
+            bash = {
+              command = "${pkgs.nodePackages.bash-language-server}/bin/bash-language-server";
+              args = [ "start" ];
+              filetypes = [ "sh" ];
+              rootPatterns = ["*.tf"];
+              ignoredRootPaths = ["~"];
+            };
+
+            go = {
+              command = "${pkgs.gotools}/bin/gopls";
+              filetypes = [ "go" ];
+              rootPatterns = ["go.mod"];
+            };
+
+            lua = {
+              command = "${pkgs.luaPackages.lua-lsp}/bin/lua-lsp";
+              filetypes = [ "lua" ];
             };
           };
         };
@@ -215,8 +244,8 @@ in {
 
     etc = {
       "containers/registries.conf".text = ''
-      [registries.search]
-      registries = ['docker.io', 'quay.io', "gcr.io", "eu.gcr.io"]
+        [registries.search]
+        registries = ['docker.io', 'quay.io', "gcr.io", "eu.gcr.io"]
       '';
 
       "containers/policy.json".text     = builtins.toJSON {
@@ -246,6 +275,7 @@ in {
       pkgs.conmon
       pkgs.runc
       pkgs.mongodb-tools
+      pkgs.mongodb
       pkgs.slirp4netns
       pkgs.zip
       pkgs.ack
@@ -283,9 +313,20 @@ in {
       pkgs.httpie
       pkgs.unzip
       pkgs.dos2unix
+      pkgs.lftp
+      pkgs.qt5.qtbase
+      pkgs.kdeFrameworks.breeze-icons
       vimConfigured
-      customPackages.terraform-lsp
       customPackages.pandoc-imagine
+      customPackages.tellico
+      pkgs.omnisharp-roslyn
+
+      # For Tellico
+      pkgs.kdeFrameworks.khtml
+
+      # LSPs
+      pkgs.solargraph
+      customPackages.terraform-lsp
     ];
   };
 }
