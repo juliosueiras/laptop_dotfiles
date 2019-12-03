@@ -1,0 +1,34 @@
+endpoint: https://ellisdon-jira.atlassian.net
+user: jsueiras@ellisdon.com
+password-source: pass
+password-name: ellisdon-jira
+project: EIDEVOPS
+custom-commands:
+  - name: mine
+    help: display issues assigned to me
+    options:
+      - name: open
+        short: o
+        type: bool
+        default: false
+    script: |-
+      if [ -n "$JIRA_PROJECT" ]; then
+          # if `project: ...` configured just list the issues for current project
+          {{jira}} list --query "resolution = unresolved {{if options.open}} and status != Closed {{end}} and assignee=currentuser() and project = $JIRA_PROJECT ORDER BY priority asc, created"
+      else
+          # otherwise list issues for all project
+          {{jira}} list --query "resolution = unresolved {{if options.open}} and status != Closed {{end}} and assignee=currentuser() ORDER BY priority asc, created"
+      fi
+  - name: investigate
+    args:
+      - name: ISSUE
+        required: true
+    help: Transition issue to Investigate & Design state
+    script: |-
+      {{jira}} trans "Investigate & Design" {{args.ISSUE}} --noedit
+
+overrides:
+  size: M
+  client: Corporate IT
+  class_of_service: Planned
+  reporter: "harman singh"

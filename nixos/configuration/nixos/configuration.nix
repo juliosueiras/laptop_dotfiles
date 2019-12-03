@@ -201,6 +201,13 @@ in {
 
         ".vimtmp/.keep".text = "";
 
+        ".jira.d/config.yml" = { 
+          source = "${base}/files/jira.d/config.yml";
+          executable = false;
+        };
+
+        ".jira.d/templates".source = "${base}/files/jira.d/templates";
+
         ".vim/coc-settings.json".text = builtins.toJSON {
           "coc.preferences.timeout" = 5000;
 
@@ -321,6 +328,7 @@ in {
       vimConfigured
       customPackages.pandoc-imagine
       customPackages.tellico
+      customPackages.jira
       pkgs.omnisharp-roslyn
 
       # For Tellico

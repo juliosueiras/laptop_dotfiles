@@ -8,5 +8,6 @@ with pkgs;
   terraform = callPackage ./terraform/default.nix {};
   pandoc-imagine = callPackage ./pandoc-imagine/default.nix {};
   tellico = callPackage ./tellico/default.nix {};
+  jira = callPackage ./jira/default.nix {};
   rubyPackages = (callPackage ./rubyPackages/default.nix {}).gems;
 }
