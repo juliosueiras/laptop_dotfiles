@@ -1,7 +1,11 @@
 {{/* create subtask template */ -}}
 fields:
   project:
-    key: {{ .parent.fields.project.key }}
+    key: {{ or .overrides.project "" }}
+  issuetype:
+    name: Sub-Task
+  parent:
+    key: {{ .parent.key }}
   summary: >-
     {{ or .overrides.summary "" }}{{if .meta.fields.priority.allowedValues}}
   priority: # Values: {{ range .meta.fields.priority.allowedValues }}{{.name}}, {{end}}
@@ -11,14 +15,18 @@ fields:
   description: |~
     {{ or .overrides.description "" | indent 4 }}{{if .meta.fields.assignee}}
   assignee:
-    name: {{ or .overrides.assignee "" }}{{end}}{{if .meta.fields.reporter}}
-  reporter:
-    name: {{ or .overrides.reporter .overrides.user }}{{end}}{{if .meta.fields.customfield_10110}}
-  # watchers
-  customfield_10110: {{ range split "," (or .overrides.watchers "")}}
-    - name: {{.}}{{end}}
-    - name:{{end}}
-  issuetype:
-    name: Sub-task
-  parent:
-    key: {{ .parent.key }}
+    name: {{ or .overrides.assignee "jsueiras" }}
+
+  # Size:
+  customfield_10921: # Values: {{ range .meta.fields.customfield_10921.allowedValues }}{{.value}}, {{end}}
+    value: {{ or .overrides.size ""}}
+
+  # Client:
+  customfield_13225: # Values: {{ range .meta.fields.customfield_13225.allowedValues }}{{.value}}, {{end}}
+    value: {{ or .overrides.client ""}}
+
+  # Class of Service:
+  customfield_10920: # Values: {{ range .meta.fields.customfield_10920.allowedValues }}{{.value}}, {{end}}
+    value: {{ or .overrides.class_of_service ""}}
+    
+{{end}}

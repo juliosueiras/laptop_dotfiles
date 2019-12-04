@@ -10,4 +10,5 @@ with pkgs;
   tellico = callPackage ./tellico/default.nix {};
   jira = callPackage ./jira/default.nix {};
   rubyPackages = (callPackage ./rubyPackages/default.nix {}).gems;
+  vitaPackages = (callPackage ./vitaPackages/vita-packages.nix {});
 }

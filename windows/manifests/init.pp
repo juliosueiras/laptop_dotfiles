@@ -10,13 +10,19 @@ reboot {'dsc_reboot':
 }
 
 # Utilities
-package {["Virtualbox", "git", "Steam", "Discord", "f.lux"]:
+package {["git", "Steam", "Discord", "f.lux"]:
 }
 
 # Parsec(seperate to skip checksums)
 package {'parsec':
   install_options => ["--ignore-checksums", "--pre"],
 }
+
+package {'Virtualbox':
+  install_options   => ['-params','"','/ExtensionPack','"'],
+}
+
+
 
 # HashiCorp's Tools
 package {["terraform", "packer", "vagrant"]:

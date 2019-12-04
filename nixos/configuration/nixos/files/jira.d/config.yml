@@ -11,10 +11,14 @@ custom-commands:
         short: o
         type: bool
         default: false
+      - name: inprogress
+        short: i
+        type: bool
+        default: false
     script: |-
       if [ -n "$JIRA_PROJECT" ]; then
           # if `project: ...` configured just list the issues for current project
-          {{jira}} list --query "resolution = unresolved {{if options.open}} and status != Closed {{end}} and assignee=currentuser() and project = $JIRA_PROJECT ORDER BY priority asc, created"
+          {{jira}} list --query "resolution = unresolved {{if options.open}} and status != Closed {{end}} {{if options.inprogress}} and statusCategory = 'In Progress' {{end}} and assignee=currentuser() and project = $JIRA_PROJECT ORDER BY priority asc, created"
       else
           # otherwise list issues for all project
           {{jira}} list --query "resolution = unresolved {{if options.open}} and status != Closed {{end}} and assignee=currentuser() ORDER BY priority asc, created"
@@ -29,6 +33,6 @@ custom-commands:
 
 overrides:
   size: M
-  client: Corporate IT
+  client: Gate Three - Radix
   class_of_service: Planned
   reporter: "harman singh"

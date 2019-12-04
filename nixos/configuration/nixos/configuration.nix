@@ -63,6 +63,8 @@ in {
 
   services.fractalart.enable = true;
 
+  services.home-assistant.enable = true;
+
   services.xserver = {
     enable = true;
 
@@ -103,6 +105,10 @@ in {
           EDITOR = "vim";
           VAULT_ADDR = "https://vault.gatethree.io";
         };
+
+        initExtra = ''
+        eval "$(${customPackages.jira}/bin/jira --completion-script-bash)"
+        '';
       };
 
       browserpass = {
@@ -189,6 +195,10 @@ in {
         customPaneNavigationAndResize = true;
 
         tmuxinator.enable = true;
+
+        plugins = with pkgs; [
+          tmuxPlugins.yank
+        ];
       };
     };
 
@@ -203,6 +213,11 @@ in {
 
         ".jira.d/config.yml" = { 
           source = "${base}/files/jira.d/config.yml";
+          executable = false;
+        };
+
+        ".jira.d/subtask.yml" = { 
+          source = "${base}/files/jira.d/subtask.yml";
           executable = false;
         };
 
@@ -329,7 +344,12 @@ in {
       customPackages.pandoc-imagine
       customPackages.tellico
       customPackages.jira
-      pkgs.omnisharp-roslyn
+      pkgs.xsel
+      pkgs.nix-prefetch-github
+      pkgs.nix-prefetch-git
+      pkgs.libreoffice
+      pkgs.pdfgrep
+      pkgs.gimp
 
       # For Tellico
       pkgs.kdeFrameworks.khtml
@@ -337,6 +357,11 @@ in {
       # LSPs
       pkgs.solargraph
       customPackages.terraform-lsp
+
+      # Vita
+      customPackages.vitaPackages.qcma
+      customPackages.vitaPackages.psvimgtools
+      customPackages.vitaPackages.pkg2zip
     ];
   };
 }

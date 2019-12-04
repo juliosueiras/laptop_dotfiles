@@ -1,0 +1,12 @@
+endpoint: https://ellisdon-jira.atlassian.net
+user: jsueiras@ellisdon.com
+password-source: pass
+password-name: ellisdon-jira
+project: EIDEVOPS
+issuetype: Sub-Task
+
+overrides:
+  size: M
+  client: Gate Three - Radix
+  class_of_service: Planned
+  reporter: "harman singh"
