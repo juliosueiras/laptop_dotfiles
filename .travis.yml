@@ -3,4 +3,4 @@ language: generic
 before_install:
   - curl https://nixos.org/nix/install | sh
   - . /home/travis/.nix-profile/etc/profile.d/nix.sh
-  - bash ./run.sh
+  - nix-shell --run ./run.sh
