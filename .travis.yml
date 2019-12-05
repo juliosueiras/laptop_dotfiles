@@ -1,4 +1,4 @@
-jobs:
- include:
-   - os: linux
-     script: cat /proc/cpuinfo
+dist: bionic
+language: generic
+before_install:
+  - cat /proc/cpuinfo
