@@ -3,6 +3,7 @@ with import <nixpkgs> {};
 mkShell {
   buildInputs = [
     vagrant
-    virtualboxHeadless
+    #virtualboxHeadless
+    virtualbox
   ];
 }
