@@ -3,7 +3,7 @@ language: generic
 before_install:
   - sudo apt-get update
   - sudo apt-get -y --force-yes install linux-headers-`uname -r`
-  - sudo apt-get -y install -q virtualbox-ose-dkms virtualbox
+  - sudo apt-get -y install -q virtualbox
   - curl https://nixos.org/nix/install | sh
   - sudo mkdir -p /etc/nix && echo 'sandbox = true' | sudo tee /etc/nix/nix.conf
   - echo "substituters = https://cache.nixos.org/ file://$HOME/nix.store" | sudo tee -a /etc/nix/nix.conf > /dev/null
