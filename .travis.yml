@@ -2,3 +2,5 @@ dist: bionic
 language: generic
 before_install:
   - curl https://nixos.org/nix/install | sh
+  - nix-shell
+  - vagrant --version
