@@ -1,0 +1,4 @@
+jobs:
+ include:
+   - os: linux
+     script: cat /proc/cpuinfo
