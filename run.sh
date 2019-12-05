@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell shell.nix
+#!nix-shell -i bash -p vagrant
 
 vagrant --version
 
