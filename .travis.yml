@@ -1,4 +1,4 @@
 dist: bionic
-language: generic
+language: nix
 before_install:
   - cat /proc/cpuinfo
