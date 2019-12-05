@@ -1,4 +1,4 @@
 dist: bionic
-language: nix
+language: generic
 before_install:
-  - cat /proc/cpuinfo
+  - curl https://nixos.org/nix/install | sh
