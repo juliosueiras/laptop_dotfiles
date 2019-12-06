@@ -1761,17 +1761,6 @@
     };
     version = "1.4.0";
   };
-  vagrant-winrm = {
-    dependencies = ["minitar"];
-    groups = ["default"];
-    platforms = [];
-    source = {
-      remotes = ["https://rubygems.org"];
-      sha256 = "1kal03r27hanpfajr1gfgj4rjfz09zj5nfq8nwzarlznmmhj6slc";
-      type = "gem";
-    };
-    version = "0.7.0";
-  };
   winrm = {
     dependencies = ["builder" "erubi" "gssapi" "gyoku" "httpclient" "logging" "nori" "rubyntlm"];
     groups = ["default"];

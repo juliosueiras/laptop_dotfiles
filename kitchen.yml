@@ -26,6 +26,10 @@ platforms:
   - name: windows-10
     driver_plugin: vagrant
     driver_config:
+      guest: windows
+      communicator: winrm
+      username: vagrant
+      password: vagrant
       box: Microsoft/EdgeOnWindows10
 
 verifier:

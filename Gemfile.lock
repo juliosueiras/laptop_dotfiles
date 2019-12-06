@@ -478,8 +478,6 @@ GEM
     unf_ext (0.0.7.2)
     unicode-display_width (1.6.0)
     unicode_utils (1.4.0)
-    vagrant-winrm (0.7.0)
-      minitar (~> 0.5)
     winrm (2.3.3)
       builder (>= 2.1.2)
       erubi (~> 1.8)
@@ -509,7 +507,6 @@ DEPENDENCIES
   kitchen-vagrant (= 1.6.0)
   librarian-puppet (= 3.0.0)
   test-kitchen (= 2.3.4)
-  vagrant-winrm (= 0.7.0)
 
 BUNDLED WITH
    1.17.3
