@@ -1,3 +1,3 @@
 #vagrant up
-
-kitchen test
+bundle install
+bundle exec kitchen test
