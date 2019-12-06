@@ -662,6 +662,16 @@
     };
     version = "0.1.0";
   };
+  deep_merge = {
+    groups = ["default"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "1q3picw7zx1xdkybmrnhmk2hycxzaa0jv4gqrby1s90dy5n7fmsb";
+      type = "gem";
+    };
+    version = "1.2.1";
+  };
   diff-lcs = {
     groups = ["default"];
     platforms = [];
@@ -733,6 +743,16 @@
       type = "gem";
     };
     version = "0.70.0";
+  };
+  facter = {
+    groups = ["default"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "1ngh051knc50ifbvbwi53g8lv3ci2xz6z69afi6p8pgim6drw84g";
+      type = "gem";
+    };
+    version = "2.5.6";
   };
   faraday = {
     dependencies = ["multipart-post"];
@@ -862,6 +882,26 @@
       type = "gem";
     };
     version = "3.6.0";
+  };
+  hiera = {
+    groups = ["default"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "0m7rxky6v9vjwl5pjm3jf3y9sm7y2l6ch7808js5ajd0fck1hyx7";
+      type = "gem";
+    };
+    version = "3.6.0";
+  };
+  hocon = {
+    groups = ["default"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "0fw1857na3xv9z76cgqimz0cxw3hmvbjl3llg3ff2v8hhpyxd5yd";
+      type = "gem";
+    };
+    version = "1.3.0";
   };
   htmlentities = {
     groups = ["default"];
@@ -1310,6 +1350,28 @@
       type = "gem";
     };
     version = "4.0.1";
+  };
+  puppet = {
+    dependencies = ["concurrent-ruby" "deep_merge" "facter" "fast_gettext" "hiera" "httpclient" "locale" "multi_json" "puppet-resource_api" "semantic_puppet"];
+    groups = ["default"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "1s789iax5ic3i9j2241036z4n4hbzrcydqfpafmw6pavyr2hsini";
+      type = "gem";
+    };
+    version = "6.11.1";
+  };
+  puppet-resource_api = {
+    dependencies = ["hocon"];
+    groups = ["default"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "0fq7mq69m0h3icfgmasw4yw3h49jwrcggacdkx6rypb79l1v8jm6";
+      type = "gem";
+    };
+    version = "1.8.7";
   };
   puppet_forge = {
     dependencies = ["faraday" "faraday_middleware" "gettext-setup" "minitar" "semantic_puppet"];
