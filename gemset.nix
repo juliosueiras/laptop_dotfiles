@@ -1023,9 +1023,11 @@
     groups = ["default"];
     platforms = [];
     source = {
-      remotes = ["https://rubygems.org"];
-      sha256 = "1yjyb9n6si7n3lfa7h7g9wc33gs3c3z34rsr5n7icswfiirra27r";
-      type = "gem";
+      fetchSubmodules = false;
+      rev = "818eefab963c079582088afd11b908ac105ae3df";
+      sha256 = "1lmm3yvfks8jr2ws45l358m7r28bzi42r23wvg1glgxp6lcqbnlb";
+      type = "git";
+      url = "https://github.com/juliosueiras/kitchen-puppet.git";
     };
     version = "3.5.1";
   };
