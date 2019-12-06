@@ -1,1 +1,3 @@
-vagrant up
+#vagrant up
+
+kitchen test
