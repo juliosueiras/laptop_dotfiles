@@ -30,7 +30,7 @@ platforms:
       communicator: winrm
       username: vagrant
       password: vagrant
-      box: Microsoft/EdgeOnWindows10
+      box: senglin/win-10-enterprise-vs2015community
 
 verifier:
   name: inspec

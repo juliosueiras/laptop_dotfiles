@@ -2,8 +2,12 @@ dist: bionic
 language: generic
 before_install:
   - sudo apt-get update
-  - sudo apt-get -y --force-yes install linux-headers-`uname -r`
-  - sudo apt-get -y install -q virtualbox
+  - sudo apt-get -y --force-yes install linux-headers-`uname -r` software-properties-common
+  - wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+  - wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
+  - sudo add-apt-repository "deb http://download.virtualbox.org/virtualbox/debian bionic contrib"
+  - sudo apt-get update
+  - sudo apt-get -y install -q virtualbox-6.0
   - curl https://nixos.org/nix/install | sh
   - sudo mkdir -p /etc/nix && echo 'sandbox = true' | sudo tee /etc/nix/nix.conf
   - echo "substituters = https://cache.nixos.org/ file://$HOME/nix.store" | sudo tee -a /etc/nix/nix.conf > /dev/null
