@@ -1,15 +1,39 @@
 ---
 driver:
   name: vagrant
-
+ 
 provisioner:
-  name: chef_solo
-  chef_license: accept
+  name: puppet_apply
+  manifests_path: windows
+  modules_path: .kitchen-modules
+  require_chef_for_busser: false
+  resolve_with_librarian_puppet: true
+  puppet_debug: <%= ENV['PUPPET_DEBUG'] %>
+  custom_options: <%= ENV['PUPPET_COLOR'] %>
+  require_puppet_collections: true
+  puppet_detailed_exitcodes: true
+  max_retries: 3
+  retry_on_exit_code:
+    - 1
+    - 2
+    - 4
+    - 6
+
+transport:
+  name: winrm
 
 platforms:
-  - name: ubuntu-18.04
+  - name: windows-10
+    driver_plugin: vagrant
+    driver_config:
+      box: Microsoft/EdgeOnWindows10
+
+verifier:
+  name: inspec
 
 suites:
   - name: default
-    run_list:
-    attributes:
+    verifier:
+     inspec_tests:
+      - path: ./test/integration/default/test.rb
+
