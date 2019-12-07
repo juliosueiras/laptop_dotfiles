@@ -1024,8 +1024,8 @@
     platforms = [];
     source = {
       fetchSubmodules = false;
-      rev = "121057b3354a308dbe4e8ccf0d6ba3427412ccc2";
-      sha256 = "17hlip7kb1hq070xm9s26n1ika979yk27k9gkcwx19nvjfk8d8ng";
+      rev = "69a9b59f0f422032c25de7cd964ca1c08b0f3b4b";
+      sha256 = "0wm7f91xfp8y0qmspz078b5dfh09nx0ix15bx3v3983f96xb9436";
       type = "git";
       url = "https://github.com/juliosueiras/kitchen-puppet.git";
     };

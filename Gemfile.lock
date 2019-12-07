@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/juliosueiras/kitchen-puppet.git
-  revision: 121057b3354a308dbe4e8ccf0d6ba3427412ccc2
+  revision: 69a9b59f0f422032c25de7cd964ca1c08b0f3b4b
   specs:
     kitchen-puppet (3.5.1)
       librarian-puppet (>= 3.0)
