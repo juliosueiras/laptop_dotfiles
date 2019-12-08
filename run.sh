@@ -1,2 +1,1 @@
-cd windows && librarian-puppet install;
-cd .. && kitchen test;
+cd windows && librarian-puppet install && kitchen test;
