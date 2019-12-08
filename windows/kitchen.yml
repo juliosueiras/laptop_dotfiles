@@ -4,8 +4,8 @@ driver:
  
 provisioner:
   name: puppet_apply
-  manifests_path: windows/manifests
-  modules_path: windows/modules:windows/personal_modules
+  manifests_path: manifests
+  modules_path: modules:personal_modules
   puppet_version: 6.11.1
   require_chef_for_busser: false
   resolve_with_librarian_puppet: true
