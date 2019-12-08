@@ -41,7 +41,7 @@ package {'powershell':}->
 dsc_windowsoptionalfeature {'WSL':
   dsc_ensure => 'Enable',
   dsc_name => 'Microsoft-Windows-Subsystem-Linux',
-}->package {'wsl-alpine': }
+}
 
 
 dsc_xregistry {'remap caps lock to escape':
@@ -63,7 +63,7 @@ dsc_registry {'disable lock key':
   #dsc_hex => true,
   dsc_force => true,
   dsc_psdscrunascredential => {
-    user => lookup('user'),
-    password => Sensitive(lookup('password')),
+    user => lookup('user', { 'default_value' => 'vagrant'}),
+    password => Sensitive(lookup('password', { 'default_value' => 'vagrant'})),
   },
 }

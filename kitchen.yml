@@ -4,8 +4,9 @@ driver:
  
 provisioner:
   name: puppet_apply
-  manifests_path: windows
-  modules_path: .kitchen-modules
+  manifests_path: windows/manifests
+  modules_path: windows/modules:windows/personal_modules
+  puppet_version: 6.11.1
   require_chef_for_busser: false
   resolve_with_librarian_puppet: true
   puppet_debug: <%= ENV['PUPPET_DEBUG'] %>
@@ -30,7 +31,8 @@ platforms:
       communicator: winrm
       username: vagrant
       password: vagrant
-      box: senglin/win-10-enterprise-vs2015community
+      box: StefanScherer/windows_10
+
 
 verifier:
   name: inspec
