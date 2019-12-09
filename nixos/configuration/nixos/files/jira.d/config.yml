@@ -31,6 +31,14 @@ custom-commands:
     script: |-
       {{jira}} trans "Investigate & Design" {{args.ISSUE}} --noedit
 
+  - name: search
+    args:
+      - name: text
+        required: true
+    help: Search My Tasks
+    script: |-
+      {{jira}} list --query "assignee=currentuser() AND summary ~ {{args.text}} AND project = $JIRA_PROJECT ORDER BY priority asc, created"
+
 overrides:
   size: M
   client: Gate Three - Radix

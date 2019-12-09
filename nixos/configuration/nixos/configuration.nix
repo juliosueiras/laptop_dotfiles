@@ -10,18 +10,6 @@ let
   };
 
   customPackages = import "${base}/packages/all-packages.nix" { inherit pkgs; };
-
-  customRuby = pkgs.ruby.withPackages (p: with customPackages.rubyPackages; [
-    pkgs.bundler
-    puppet
-    bolt
-    librarian-puppet
-    inspec-bin
-    chef
-    test-kitchen
-    kitchen-google
-    kitchen-puppet
-  ]);
 in {
   imports = [
     ./configuration.nix
@@ -84,10 +72,10 @@ in {
     displayManager.gdm.enable = true;
     displayManager.gdm.wayland = false;
 
-    desktopManager = {
-      #Mostly for tellico
-      plasma5.enable = true;
-    };
+    #desktopManager = {
+    #  #Mostly for tellico
+    #  plasma5.enable = true;
+    #};
 
     windowManager = {
       awesome.enable = true;
@@ -361,7 +349,6 @@ in {
       pkgs.packer
       pkgs.bundler
       pkgs.puppet-lint
-      customRuby
       pkgs.chefdk
       pkgs.autoconf
       pkgs.augeas
@@ -376,7 +363,9 @@ in {
       pkgs.kdeFrameworks.breeze-icons
       vimConfigured
       customPackages.pandoc-imagine
-      customPackages.tellico
+
+      # Removed due to using Collectorz Cloud Connect
+      #customPackages.tellico
       customPackages.jira
       pkgs.xsel
       pkgs.nix-prefetch-github
@@ -389,6 +378,7 @@ in {
       pkgs.unrar
       pkgs.bundix
       unstablePackages.pypi2nix
+      customPackages.customRuby
 
       # For Tellico
       pkgs.kdeFrameworks.khtml
