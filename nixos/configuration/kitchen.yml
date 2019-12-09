@@ -1,0 +1,30 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: shell
+
+transport:
+  name: ssh
+
+platforms:
+  - name: nixos
+    driver_plugin: vagrant 
+    driver_config:
+      customize:
+        memory: 2000
+        cpuexecutioncap: 50
+      box: juliosueiras/nixbox
+      provision: true
+      pre_create_command: mkdir -p .kitchen/kitchen-vagrant/default-nixos && cp -rf nixos .kitchen/kitchen-vagrant/default-nixos
+      synced_folders:
+      - ["nixos", "/vagrant/nixos"]
+      vagrantfiles: 
+      - ./Vagrantfile.kitchen.rb
+
+verifier:
+  name: inspec
+
+suites:
+  - name: default
