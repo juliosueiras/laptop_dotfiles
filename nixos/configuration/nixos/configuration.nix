@@ -3,6 +3,8 @@
 let
   base = "/vagrant/nixos";
 
+  unstablePackages = import "${builtins.fetchTarball https://github.com/nixos/nixpkgs/archive/dcf9a77568b84295c92c8dc5c2df1f4292818601.tar.gz}" {};
+
   vimConfigured = pkgs.vim_configurable.override {
     python = pkgs.python3;
   };
@@ -38,6 +40,10 @@ in {
   users.users.vagrant.subGidRanges = [
     { startGid = 1000000; count = 65536; }
   ];
+
+  nix.binaryCaches = [ "https://cache.nixos.org" "https://laptop-dotfiles.cachix.org" ];
+
+  nix.binaryCachePublicKeys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" "laptop-dotfiles.cachix.org-1:Okurdv1/SRJkXNODJsAi/K6FZLDmhr4gMSwV9XiWw+g=" ];
 
   nixpkgs.config = {
     allowUnfree = true;
@@ -89,6 +95,10 @@ in {
   };
 
   home-manager.users.vagrant = {
+    nixpkgs.config = {
+      allowUnfree = true;
+    };
+
     programs = {
 
       direnv.enable = true;
@@ -104,6 +114,7 @@ in {
         sessionVariables = {
           EDITOR = "vim";
           VAULT_ADDR = "https://vault.gatethree.io";
+          GO111MODULE = "on";
         };
 
         initExtra = ''
@@ -123,6 +134,12 @@ in {
 
         aliases = {
           ignore = "\"!gi() { curl -sL https://www.gitignore.io/api/$@ ;}; gi\"";
+        };
+
+        extraConfig = {
+          credential = {
+            helper = "${pkgs.gitAndTools.pass-git-helper}/bin/pass-git-helper";
+          };
         };
       };
 
@@ -203,11 +220,22 @@ in {
     };
 
     home = {
+      packages = [
+      	pkgs.cachix
+      ];
+
       file = {
         ".inputrc".text = ''
           set editing-mode vi
           set keymap vi-command
         '';
+
+
+        ".config/pass-git-helper/git-pass-mapping.ini".text = pkgs.lib.generators.toINI {} {
+          "github.com" = {
+            target = "ellisdon/github";
+          };
+        };
 
         ".vimtmp/.keep".text = "";
 
@@ -350,6 +378,11 @@ in {
       pkgs.libreoffice
       pkgs.pdfgrep
       pkgs.gimp
+      pkgs.slack-term
+      pkgs.zathura
+      pkgs.unrar
+      pkgs.bundix
+      unstablePackages.pypi2nix
 
       # For Tellico
       pkgs.kdeFrameworks.khtml
