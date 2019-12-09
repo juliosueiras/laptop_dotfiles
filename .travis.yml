@@ -1,8 +1,10 @@
 jobs:
   include:
-    - stage: Windows
+    - stage: Build
       dist: bionic
       language: generic
+      env:
+        - SYSTEM=Windows
       before_install:
         - sudo apt-get update
         - sudo apt-get -y --force-yes install linux-headers-`uname -r` software-properties-common
@@ -19,9 +21,10 @@ jobs:
         - . /home/travis/.nix-profile/etc/profile.d/nix.sh
         - travis_wait 120 nix-shell --run ./run_windows.sh
 
-    - stage: NixOS
-      dist: bionic
+    - dist: bionic
       language: generic
+      env:
+        - SYSTEM=NixOS
       before_install:
         - sudo apt-get update
         - sudo apt-get -y --force-yes install linux-headers-`uname -r` software-properties-common
