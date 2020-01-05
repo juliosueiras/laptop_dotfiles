@@ -53,6 +53,9 @@ in {
 
   time.timeZone = "America/Toronto";
 
+  sound.enable = true;
+  hardware.pulseaudio.enable = true;
+
   fonts.fonts = with pkgs; [
     cantarell-fonts
     dejavu_fonts
@@ -63,7 +66,11 @@ in {
 
   services.fractalart.enable = true;
 
-  services.home-assistant.enable = true;
+  services.home-assistant = {
+    package = unstablePackages.home-assistant;
+    openFirewall = true;
+    enable = true;
+  };
 
   services.xserver = {
     enable = true;
@@ -84,6 +91,7 @@ in {
 
   programs = {
     thefuck.enable = true;
+    adb.enable = true;
 
     vim.defaultEditor = true;
   };
@@ -91,6 +99,7 @@ in {
   home-manager.users.vagrant = {
     nixpkgs.config = {
       allowUnfree = true;
+      allowUnsupportedSystem = true;
     };
 
     programs = {
@@ -332,6 +341,9 @@ in {
       pkgs.file
       pkgs.asciinema
       customPackages.terraform
+      pkgs.terraform-docs
+      customPackages.terraform-config-inspect
+      customPackages.allmark
       pkgs.ranger
       pkgs.kubectl
       pkgs.ansible
@@ -377,7 +389,12 @@ in {
       pkgs.zathura
       pkgs.unrar
       pkgs.bundix
+      pkgs.exfat
+      pkgs.xdelta
+      pkgs.browsh
+      pkgs.firefox
       unstablePackages.pypi2nix
+      unstablePackages.radare2-cutter
       customPackages.customRuby
 
       # For Tellico
@@ -391,6 +408,8 @@ in {
       customPackages.vitaPackages.qcma
       customPackages.vitaPackages.psvimgtools
       customPackages.vitaPackages.pkg2zip
+
+      customPackages.flashplayer-standalone
     ];
   };
 }
