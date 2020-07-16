@@ -1,0 +1,6 @@
+[submodule "nixos/configuration/nixos/deps/nixpkgs"]
+	path = nixos/configuration/nixos/deps/nixpkgs
+	url = https://github.com/nixos/nixpkgs
+[submodule "nixos/configuration/nixos/deps/home-manager"]
+	path = nixos/configuration/nixos/deps/home-manager
+	url = https://github.com/rycee/home-manager

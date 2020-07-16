@@ -1,0 +1,76 @@
+diff --git a/terraform_compliance/extensions/terraform.py b/terraform_compliance/extensions/terraform.py
+index e322337..4c44cf2 100644
+--- a/terraform_compliance/extensions/terraform.py
++++ b/terraform_compliance/extensions/terraform.py
+@@ -88,7 +88,7 @@ class TerraformParser(object):
+         # Resources ( exists in Plan )
+         for findings in seek_key_in_dict(self.raw.get('planned_values', {}).get('root_module', {}), 'resources'):
+             for resource in findings.get('resources', []):
+-                if resource['address'].startswith('data'):
++                if resource['address'].startswith('data.'):
+                     self.data[resource['address']] = resource
+                 else:
+                     self.resources[resource['address']] = resource
+@@ -96,7 +96,7 @@ class TerraformParser(object):
+         # Resources ( exists in State )
+         for findings in seek_key_in_dict(self.raw.get('values', {}).get('root_module', {}), 'resources'):
+             for resource in findings.get('resources', []):
+-                if resource['address'].startswith('data'):
++                if resource['address'].startswith('data.'):
+                     self.data[resource['address']] = resource
+                 else:
+                     self.resources[resource['address']] = resource
+@@ -104,7 +104,7 @@ class TerraformParser(object):
+         # Resources ( exists in Prior State )
+         for findings in seek_key_in_dict(self.raw.get('prior_state', {}).get('values', {}).get('root_module', {}).get('resources', {}), 'resource'):
+             for resource in findings.get('resources', []):
+-                if resource['address'].startswith('data'):
++                if resource['address'].startswith('data.'):
+                     self.data[resource['address']] = resource
+                 else:
+                     self.resources[resource['address']] = resource
+@@ -112,7 +112,7 @@ class TerraformParser(object):
+         # Child Modules Resources ( exists in State )
+         for findings in seek_key_in_dict(self.raw.get('values', {}).get('root_module', {}), 'child_modules'):
+             for resource in findings.get('resources', []):
+-                if resource['address'].startswith('data'):
++                if resource['address'].startswith('data.'):
+                     self.data[resource['address']] = resource
+                 else:
+                     self.resources[resource['address']] = resource
+@@ -127,7 +127,7 @@ class TerraformParser(object):
+                 if 'change' in resource:
+                     del resource['change']
+ 
+-                if resource['address'].startswith('data'):
++                if resource['address'].startswith('data.'):
+                     self.data[resource['address']] = resource
+                 else:
+                     self.resources[resource['address']] = resource
+@@ -145,7 +145,7 @@ class TerraformParser(object):
+ 
+         for findings in seek_key_in_dict(self.raw.get('configuration', {}).get('root_module', {}), 'resources'):
+             for resource in findings.get('resources', []):
+-                if resource['address'].startswith('data'):
++                if resource['address'].startswith('data.'):
+                     self.data[resource['address']] = resource
+                 else:
+                     self.configuration['resources'][resource['address']] = resource
+@@ -294,7 +294,7 @@ class TerraformParser(object):
+                                                                                             {}).get('constant_value',
+                                                                                                     {})
+ 
+-                    if not ref_type and not resource.startswith(('data')):
++                    if not ref_type and not resource.startswith(('data.')):
+                         resource_type, resource_id = resource.split('.')
+                         ref_type = resource_type
+ 
+@@ -310,7 +310,7 @@ class TerraformParser(object):
+                     # Mounting B->A
+                     for parameter, target_resources in ref_list.items():
+                         for target_resource in target_resources:
+-                            if not target_resource.startswith(('var', 'data', 'provider')):
++                            if not target_resource.startswith(('var', 'data.', 'provider')):
+                                 ref_type = target_resource.split('.', maxsplit=1)[0]
+ 
+                                 self._mount_resources(source=[target_resource],

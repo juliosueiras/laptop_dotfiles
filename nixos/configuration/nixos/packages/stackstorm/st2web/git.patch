@@ -1,0 +1,14 @@
+diff --git a/tasks/production/package-metadata.js b/tasks/production/package-metadata.js
+index 44dfd7dd..8f68b623 100644
+--- a/tasks/production/package-metadata.js
++++ b/tasks/production/package-metadata.js
+@@ -22,8 +22,7 @@ const path = require('path');
+ gulp.task('production-package-metadata', (done) => {
+   const circle_build_url = process.env.CIRCLE_BUILD_URL;
+ 
+-  const result = child_process.spawnSync('git', [ 'rev-parse', '--short', 'HEAD' ]);
+-  const git_sha = result.stdout.toString().trim();
++  const git_sha = "656c1e49ca6b4bd9580a105d62f6ee5aa2980600";
+ 
+   const pkg_version = require(path.resolve('./package.json')).st2_version;
+ 

@@ -1,4 +1,4 @@
-{ vimUtils, fetchgit, ... }:
+{ vimUtils, vimPlugins, python3Packages, python3, fetchgit, fetchFromGitHub, ... }:
 
 {
   onedark = vimUtils.buildVimPlugin {
@@ -51,5 +51,145 @@
     };
 
     dependencies = [];
+  };
+
+  killersheep = vimUtils.buildVimPlugin {
+    name = "killersheep";
+    src = fetchgit {
+      url = "https://github.com/vim/killersheep.git";
+      rev = "3c6a7865a550244b150b7dbc11eeb4d1047ac4c5";
+      sha256 = "1qr9cxvyf4p9zmrx0c4mcqidfrkqj2m12lz6rajbm2lgg6lkvzik";
+    };
+
+    dependencies = [];
+  };
+
+  vim-game-code-break = vimUtils.buildVimPlugin {
+    name = "killersheep";
+    src = fetchgit {
+      url = "https://github.com/johngrib/vim-game-code-break.git";
+      rev = "51ef5fadc79e2af65b76d120093a4176dcdbca53";
+      sha256 = "0a384434qq606a1bagal66h1jnsys6ri9bqj0r4cf8l74wbkkndj";
+    };
+
+    dependencies = [];
+  };
+
+  vinarise = vimUtils.buildVimPlugin {
+    name = "vinarise.vim";
+    src = fetchgit {
+      url = "https://github.com/Shougo/vinarise.vim.git";
+      rev = "9285d3f0dc012c6bbe29210dc4f4628bb4ca5000";
+      sha256 = "1jmqh87pfxhbrbw4lkcqlp028skr44whlka2y4pnl2q1z2qzjf5f";
+    };
+
+    dependencies = [];
+  };
+
+  vim-rego = vimUtils.buildVimPlugin {
+    name = "vim-rego";
+    src = fetchgit {
+      url = "https://github.com/tsandall/vim-rego.git";
+      rev = "365edd3f0ac22a5d29387607389f46ab12540789";
+      sha256 = "1bj0ghi22zh8rxa3m01qw1cscszzvxjimsq40l537jpv8sp6c7ys";
+    };
+
+    dependencies = [];
+  };
+
+  coc-python = vimUtils.buildVimPluginFrom2Nix {
+    pname = "coc-python";
+    version = "1.2.12";
+    propagatedBuildInputs = [
+      python3Packages.jedi
+    ];
+    src = fetchFromGitHub {
+      owner = "neoclide";
+      repo = "coc-python";
+      rev = "968aec39f74c6f80e6c9c3c0fed51b6113a1a35a";
+      sha256 = "135z48idr8r7604ymiqdsml9z6d3swaja89697znszigpy05nz11";
+    };
+  };
+
+  coc-nvim = vimUtils.buildVimPluginFrom2Nix rec {
+    pname = "coc-nvim";
+    version = "0.0.78";
+    src = fetchFromGitHub {
+      owner = "neoclide";
+      repo = "coc.nvim";
+      rev = "v${version}";
+      sha256 = "1r8ysly8lcfpxky31mj5n5r641k44di5pa8n80l95v7ik939h3ws";
+    };
+  };
+
+  coc-go = vimPlugins.coc-go.overrideAttrs(old: {
+    src = fetchFromGitHub {
+      owner = "josa42";
+      repo = "coc-go";
+      rev = "v0.7.0";
+      sha256 = "16cgdxn93zf0q5d80xb9c6khzgx02qvsjdaw3kf07qqsmdjvy4gj";
+    };
+  });
+
+  vim-dadbod = vimUtils.buildVimPluginFrom2Nix rec {
+    pname = "vim-dadbod";
+    version = "master";
+    src = fetchFromGitHub {
+      owner = "tpope";
+      repo = "vim-dadbod";
+      rev = "779e8d6efc89b68be951ac1419baae75541cf51c";
+      sha256 = "019k26g88y713wy3q06sbab82dgcgsj7f08g9xr2z2xsjmijp8g4";
+    };
+  };
+
+  vim-dadbod-ui = vimUtils.buildVimPluginFrom2Nix rec {
+    pname = "vim-dadbod-ui";
+    version = "master";
+    src = fetchFromGitHub {
+      owner = "kristijanhusak";
+      repo = "vim-dadbod-ui";
+      rev = "9dad12021f82ff8541dec05031d3363ffbcb090f";
+      sha256 = "1l8grqbcv9byp8ciswn47pnp734jbki28b3a73pzqbrp98nxirmj";
+    };
+  };
+
+  vim-dadbod-completion = vimUtils.buildVimPluginFrom2Nix rec {
+    pname = "vim-dadbod-completion";
+    version = "master";
+    src = fetchFromGitHub {
+      owner = "kristijanhusak";
+      repo = "vim-dadbod-completion";
+      rev = "6533052bc5b7f9f3266907f19d1b15813d45953c";
+      sha256 = "0qb69whzxvfh9zlrzw2gyhwsw836h3k7i66zfq5760w5ip6xdrrc";
+    };
+  };
+
+  dbext-vim = vimUtils.buildVimPluginFrom2Nix rec {
+    pname = "dbext-vim";
+    version = "master";
+    src = fetchFromGitHub {
+      owner = "vim-scripts";
+      repo = "dbext.vim";
+      rev = "14f3d530b6189dc3f97edfa70b7a36006e21148c";
+      sha256 = "03mrqrf689ww8ci80mwlz87zyijdrfnz57qq4n9waavjl9lbhpmn";
+    };
+  };
+
+  jira-vim = vimUtils.buildVimPluginFrom2Nix rec {
+    pname = "jira-vim";
+    version = "master";
+    propagatedBuildInputs = [
+      (python3.withPackages(ps: [ ps.jira ps.requests ps.setuptools ps.pip ]))
+      python3Packages.jira
+      python3Packages.requests
+      python3Packages.setuptools
+      python3Packages.pip
+    ];
+    src = fetchFromGitHub {
+      owner = "paulkass";
+      repo = "jira-vim";
+      rev = "bc54b6948042233356f1b8ddcb34186ba5aadd59";
+      sha256 = "1qhfajc5dw20ll50hs2chyd34mj5hq0g30a8cfw903nqgc0j4yli";
+    };
   };
 }

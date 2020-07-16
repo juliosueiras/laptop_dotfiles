@@ -1,0 +1,12 @@
+diff --git a/bin/allure b/bin/allure
+index 37d83fc..a8702c5 100755
+--- a/bin/allure
++++ b/bin/allure
+@@ -5,6 +5,7 @@
+ ##  allure start up script for UN*X
+ ##
+ ##############################################################################
++echo $JAVA_HOME
+ 
+ # Attempt to set APP_HOME
+ # Resolve links: $0 may be a link

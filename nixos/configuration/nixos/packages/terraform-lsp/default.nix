@@ -2,16 +2,16 @@
 
 buildGoModule rec {
   pname = "terraform-lsp";
-  version = "0.0.9";
+  version = "master";
 
   src = fetchFromGitHub {
     owner = "juliosueiras";
     repo = pname;
-    rev = "v${version}";
-    sha256 = "1m133fznf58fkjl5yx0gxa3cjfb0h8f9fv760c9h1d5cg279bghk";
+    rev = "master";
+    sha256 = "Grlcx4LbhTvYdUPfWsa+1rLdlaVg2d3SB8ra8ZCknPs=";
   };
 
-  modSha256 = "1mb3169vdlv4h10k15pg88s48s2b6y7v5frk9j9ahg52grygcqb2";
+  modSha256 = "/hzVXQTyqbw4bgWRa0/FOTDpmTyfdnd4nXFL1WsJ06k=";
 
   meta = with lib; {
     description = "Language Server Protocol for Terraform";

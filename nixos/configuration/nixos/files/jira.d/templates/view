@@ -15,9 +15,9 @@ components: {{ range .fields.components }}{{ .name }} {{end}}
 issuetype: {{ .fields.issuetype.name }}
 {{end -}}
 {{if .fields.assignee -}}
-assignee: {{ .fields.assignee.name }}
+assignee: {{ .fields.assignee.displayName }}
 {{end -}}
-reporter: {{ if .fields.reporter }}{{ .fields.reporter.name }}{{end}}
+reporter: {{ if .fields.reporter }}{{ .fields.reporter.displayName }}{{end}}
 {{if .fields.customfield_10110 -}}
 watchers: {{ range .fields.customfield_10110 }}{{ .name }} {{end}}
 {{end -}}
