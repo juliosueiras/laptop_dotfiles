@@ -1,0 +1,288 @@
+diff --git a/bootstrap.sh b/bootstrap.sh
+index 5a54b09..efe57e6 100755
+--- a/bootstrap.sh
++++ b/bootstrap.sh
+@@ -37,4 +37,4 @@ if [ "$FORCE_REBUILD" -o \
+     touch ./_bootstrap_env/.done
+ fi
+ 
+-./_bootstrap_env/bin/pip2nix generate --no-binary :all:
++./_bootstrap_env/bin/pip2nix generate --licenses --no-binary :all:
+diff --git a/pip2nix/models/package.py b/pip2nix/models/package.py
+index 8a1ae73..11069fe 100644
+--- a/pip2nix/models/package.py
++++ b/pip2nix/models/package.py
+@@ -277,7 +277,19 @@ class PythonPackage(object):
+         Parses the license string from PKG-INFO file.
+         """
+         licenses = set()
+-        data = self.pip_req.egg_info_data('PKG-INFO')
++        data = ""
++        try:
++            try:
++                data = self.pip_req.get_dist().get_metadata('PKG-INFO')
++            except (FileNotFoundError, IOError):
++                data = self.pip_req.get_dist().get_metadata('METADATA')
++        except (FileNotFoundError, AttributeError):
++            for dist in pkg_resources.find_on_path(None, self.pip_req.source_dir):
++                try:
++                    data = dist.get_metadata('PKG-INFO')
++                except (FileNotFoundError, IOError):
++                    data = dist.get_metadata('METADATA')
++                break
+ 
+         for line in data.split('\n'):
+ 
+diff --git a/python-packages.nix b/python-packages.nix
+index dd2b57d..c07e21e 100644
+--- a/python-packages.nix
++++ b/python-packages.nix
+@@ -17,6 +17,9 @@ self: super: {
+     checkInputs = [];
+     nativeBuildInputs = [];
+     propagatedBuildInputs = [];
++    meta = {
++      license = [ pkgs.lib.licenses.bsdOriginal pkgs.lib.licenses.bsd3 ];
++    };
+   };
+   "atomicwrites" = super.buildPythonPackage rec {
+     pname = "atomicwrites";
+@@ -31,6 +34,9 @@ self: super: {
+     checkInputs = [];
+     nativeBuildInputs = [];
+     propagatedBuildInputs = [];
++    meta = {
++      license = [ pkgs.lib.licenses.mit ];
++    };
+   };
+   "attrs" = super.buildPythonPackage rec {
+     pname = "attrs";
+@@ -45,6 +51,9 @@ self: super: {
+     checkInputs = [];
+     nativeBuildInputs = [];
+     propagatedBuildInputs = [];
++    meta = {
++      license = [ pkgs.lib.licenses.mit ];
++    };
+   };
+   "click" = super.buildPythonPackage rec {
+     pname = "click";
+@@ -59,6 +68,9 @@ self: super: {
+     checkInputs = [];
+     nativeBuildInputs = [];
+     propagatedBuildInputs = [];
++    meta = {
++      license = [ pkgs.lib.licenses.bsdOriginal ];
++    };
+   };
+   "configobj" = super.buildPythonPackage rec {
+     pname = "configobj";
+@@ -75,6 +87,9 @@ self: super: {
+     propagatedBuildInputs = [
+       self."six"
+     ];
++    meta = {
++      license = [ pkgs.lib.licenses.bsdOriginal ];
++    };
+   };
+   "configparser" = super.buildPythonPackage rec {
+     pname = "configparser";
+@@ -89,6 +104,9 @@ self: super: {
+     checkInputs = [];
+     nativeBuildInputs = [];
+     propagatedBuildInputs = [];
++    meta = {
++      license = [ pkgs.lib.licenses.mit ];
++    };
+   };
+   "contexter" = super.buildPythonPackage rec {
+     pname = "contexter";
+@@ -103,6 +121,9 @@ self: super: {
+     checkInputs = [];
+     nativeBuildInputs = [];
+     propagatedBuildInputs = [];
++    meta = {
++      license = [ pkgs.lib.licenses.mit ];
++    };
+   };
+   "contextlib2" = super.buildPythonPackage rec {
+     pname = "contextlib2";
+@@ -117,6 +138,9 @@ self: super: {
+     checkInputs = [];
+     nativeBuildInputs = [];
+     propagatedBuildInputs = [];
++    meta = {
++      license = [ pkgs.lib.licenses.psfl ];
++    };
+   };
+   "funcsigs" = super.buildPythonPackage rec {
+     pname = "funcsigs";
+@@ -131,6 +155,9 @@ self: super: {
+     checkInputs = [];
+     nativeBuildInputs = [];
+     propagatedBuildInputs = [];
++    meta = {
++      license = [ { fullName = "ASL"; } pkgs.lib.licenses.asl20 ];
++    };
+   };
+   "importlib-metadata" = super.buildPythonPackage rec {
+     pname = "importlib-metadata";
+@@ -150,6 +177,9 @@ self: super: {
+       self."pathlib2"
+       self."zipp"
+     ];
++    meta = {
++      license = [ pkgs.lib.licenses.asl20 ];
++    };
+   };
+   "jinja2" = super.buildPythonPackage rec {
+     pname = "jinja2";
+@@ -166,6 +196,9 @@ self: super: {
+     propagatedBuildInputs = [
+       self."MarkupSafe"
+     ];
++    meta = {
++      license = [ pkgs.lib.licenses.bsdOriginal pkgs.lib.licenses.bsd3 ];
++    };
+   };
+   "more-itertools" = super.buildPythonPackage rec {
+     pname = "more-itertools";
+@@ -182,6 +215,9 @@ self: super: {
+     propagatedBuildInputs = [
+       self."six"
+     ];
++    meta = {
++      license = [ pkgs.lib.licenses.mit ];
++    };
+   };
+   "packaging" = super.buildPythonPackage rec {
+     pname = "packaging";
+@@ -199,6 +235,9 @@ self: super: {
+       self."pyparsing"
+       self."six"
+     ];
++    meta = {
++      license = [ pkgs.lib.licenses.bsdOriginal { fullName = "BSD or Apache License, Version 2.0"; } pkgs.lib.licenses.asl20 ];
++    };
+   };
+   "pathlib2" = super.buildPythonPackage rec {
+     pname = "pathlib2";
+@@ -216,6 +255,9 @@ self: super: {
+       self."scandir"
+       self."six"
+     ];
++    meta = {
++      license = [ pkgs.lib.licenses.mit ];
++    };
+   };
+   "pip" = super.buildPythonPackage rec {
+     pname = "pip";
+@@ -233,6 +275,9 @@ self: super: {
+       self."wheel"
+     ];
+     propagatedBuildInputs = [];
++    meta = {
++      license = [ pkgs.lib.licenses.mit ];
++    };
+   };
+   "pip2nix" = super.buildPythonPackage rec {
+     pname = "pip2nix";
+@@ -262,6 +307,9 @@ self: super: {
+       self."setuptools"
+       self."toml"
+     ];
++    meta = {
++      license = [ { fullName = "GPLv3+"; } { fullName = "GNU General Public License v3 or later (GPLv3+)"; } ];
++    };
+   };
+   "pluggy" = super.buildPythonPackage rec {
+     pname = "pluggy";
+@@ -278,6 +326,9 @@ self: super: {
+     propagatedBuildInputs = [
+       self."importlib-metadata"
+     ];
++    meta = {
++      license = [ pkgs.lib.licenses.mit ];
++    };
+   };
+   "py" = super.buildPythonPackage rec {
+     pname = "py";
+@@ -292,6 +343,9 @@ self: super: {
+     checkInputs = [];
+     nativeBuildInputs = [];
+     propagatedBuildInputs = [];
++    meta = {
++      license = [ pkgs.lib.licenses.mit ];
++    };
+   };
+   "pyparsing" = super.buildPythonPackage rec {
+     pname = "pyparsing";
+@@ -306,6 +360,9 @@ self: super: {
+     checkInputs = [];
+     nativeBuildInputs = [];
+     propagatedBuildInputs = [];
++    meta = {
++      license = [ pkgs.lib.licenses.mit ];
++    };
+   };
+   "pytest" = super.buildPythonPackage rec {
+     pname = "pytest";
+@@ -332,6 +389,9 @@ self: super: {
+       self."six"
+       self."wcwidth"
+     ];
++    meta = {
++      license = [ pkgs.lib.licenses.mit ];
++    };
+   };
+   "scandir" = super.buildPythonPackage rec {
+     pname = "scandir";
+@@ -346,6 +406,9 @@ self: super: {
+     checkInputs = [];
+     nativeBuildInputs = [];
+     propagatedBuildInputs = [];
++    meta = {
++      license = [ pkgs.lib.licenses.bsdOriginal { fullName = "New BSD License"; } ];
++    };
+   };
+   "six" = super.buildPythonPackage rec {
+     pname = "six";
+@@ -362,6 +425,9 @@ self: super: {
+     ];
+     nativeBuildInputs = [];
+     propagatedBuildInputs = [];
++    meta = {
++      license = [ pkgs.lib.licenses.mit ];
++    };
+   };
+   "toml" = super.buildPythonPackage rec {
+     pname = "toml";
+@@ -376,6 +442,9 @@ self: super: {
+     checkInputs = [];
+     nativeBuildInputs = [];
+     propagatedBuildInputs = [];
++    meta = {
++      license = [ pkgs.lib.licenses.mit ];
++    };
+   };
+   "wcwidth" = super.buildPythonPackage rec {
+     pname = "wcwidth";
+@@ -390,6 +459,9 @@ self: super: {
+     checkInputs = [];
+     nativeBuildInputs = [];
+     propagatedBuildInputs = [];
++    meta = {
++      license = [ pkgs.lib.licenses.mit ];
++    };
+   };
+   "zipp" = super.buildPythonPackage rec {
+     pname = "zipp";
+@@ -406,5 +478,8 @@ self: super: {
+     propagatedBuildInputs = [
+       self."contextlib2"
+     ];
++    meta = {
++      license = [ pkgs.lib.licenses.mit ];
++    };
+   };
+ }
